@@ -9,11 +9,11 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+SPI PWM peripheral. Works.
 
 ## How to test
 
-Explain how to use your project
+... will be added in future.
 
 ## External hardware
 
