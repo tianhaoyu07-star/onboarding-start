@@ -17,7 +17,7 @@ module spi_peripheral (
 
 );
 
-\\ Now we need to define the synchronizer to avoid metastability (since our clk and SCLK lines are asynchronous)
+// Now we need to define the synchronizer to avoid metastability (since our clk and SCLK lines are asynchronous)
 reg [2:0] sclk_sync;
 reg [2:0] copi_sync;
 reg [2:0] ncs_sync;
@@ -31,19 +31,19 @@ endmodule
 module synchronizer #(parameter SYNC_STAGES = 2)(
     input async_in,
     input clk,
-    output reg sync_out,
+    output reg sync_out, // this is our synchronized output
     output reg rise_edge_tick,
     output reg fall_edge_tick
 );
-
-    /* General shortcuts */
+    // text simplifications to make the following logic a bit more readable
         localparam T = 1'b1;
         localparam F = 1'b0;
-        
-    reg [SYNC_STAGES-1:0] sync_regs = {SYNC_STAGES{1'b0}};  // init with zeros
+    
+    // start of actual synchronizers (3 flip flops in chain)
+    reg [SYNC_STAGES-1:0] sync_regs = {SYNC_STAGES{1'b0}};  // init with all zeros
 
     always @(posedge clk) begin
-        sync_regs <= {sync_regs[SYNC_STAGES-2:0], async_in};    // shift left
+        sync_regs <= {sync_regs[SYNC_STAGES-2:0], async_in};    // shift left for every clock tick
         sync_out <= sync_regs[SYNC_STAGES-1];
 
         rise_edge_tick <= (sync_out != sync_regs[SYNC_STAGES-1]) & (sync_regs[SYNC_STAGES - 1] == T) ? T : F; 
