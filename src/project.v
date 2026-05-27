@@ -16,15 +16,14 @@ module tt_um_uwasic_onboarding_tian_yu(
     input  wire       rst_n     // reset_n - low to reset
 );
 
-    // Add this inside the module block
   assign uio_oe = 8'hFF; // Set all IOs to output
 
     // Create wires to refer to the values of the registers
-  wire [7:0] en_reg_out_7_0;
-  wire [7:0] en_reg_out_15_8;
-  wire [7:0] en_reg_pwm_7_0;
-  wire [7:0] en_reg_pwm_15_8;
-  wire [7:0] pwm_duty_cycle;
+  reg [7:0] en_reg_out_7_0;
+  reg [7:0] en_reg_out_15_8;
+  reg [7:0] en_reg_pwm_7_0;
+  reg [7:0] en_reg_pwm_15_8;
+  reg [7:0] pwm_duty_cycle;
 
     // Instantiate the PWM module
   pwm_peripheral pwm_peripheral_inst (
@@ -45,6 +44,6 @@ module tt_um_uwasic_onboarding_tian_yu(
   assign uio_oe  = 0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, ui_in[7:3], uio_in, clk, rst_n, 1'b0};
+  wire _unused = &{ena, ui_in[7:3], uio_in, 1'b0}; // this may be changed later.
 
 endmodule
